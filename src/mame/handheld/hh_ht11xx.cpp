@@ -82,7 +82,8 @@ public:
 		m_out_x(*this, "%u.%u", 0U, 0U),
 		m_in_pm(*this, "PM"),
 		m_in_pp(*this, "PP"),
-		m_in_ps(*this, "PS")
+		m_in_ps(*this, "PS"),
+		m_in_res(*this, "RES")
 	{ }
 
 	void ht1130_common(machine_config &config);
@@ -99,6 +100,7 @@ private:
 	required_ioport m_in_pm;
 	required_ioport m_in_pp;
 	required_ioport m_in_ps;
+	required_ioport m_in_res;
 };
 
 void hh_ht1130_state::machine_start()
@@ -121,6 +123,7 @@ void hh_ht1130_state::ht1130_common(machine_config &config)
 	m_maincpu->ps_in_cb().set_ioport(m_in_ps);
 	m_maincpu->pp_in_cb().set_ioport(m_in_pp);
 	m_maincpu->pm_in_cb().set_ioport(m_in_pm);
+	m_maincpu->res_in_cb().set_ioport(m_in_res);
 
 	SPEAKER(config, "speaker").front_center();
 
@@ -246,6 +249,8 @@ static INPUT_PORTS_START( ga888 ) // the unit also has an up button, and a reset
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Down / Drop")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Right / Sound")
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Left")
+	PORT_START("RES")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_MEMORY_RESET ) PORT_NAME("RESET")
 INPUT_PORTS_END
 
 
@@ -291,6 +296,12 @@ static INPUT_PORTS_START( kc55in1 )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Down / GAME")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Right")
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Left / SELECT")
+	PORT_START("RES")
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_MEMORY_RESET ) PORT_NAME("RESET")
+	// PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_? ) PORT_NAME("SOUND")
+	
+
+	
 INPUT_PORTS_END
 
 

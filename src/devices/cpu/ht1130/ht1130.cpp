@@ -39,7 +39,9 @@ ht1130_device::ht1130_device(const machine_config &mconfig, device_type type, co
 	, m_port_in_pm(*this, 0xff)
 	, m_port_in_ps(*this, 0xff)
 	, m_port_in_pp(*this, 0xff)
+	, m_port_in_res(*this, 0xff)
 	, m_port_out_pa(*this)
+	// TODO - Não entendi nada disso.
 	, m_segment_out(*this)
 {
 }
@@ -288,13 +290,30 @@ void ht1190_device::device_start()
 
 void ht1130_device::device_reset()
 {
+	printf("resetou?");
+	// Sets the program counter PC to 000H
 	m_pc = 0;
+	
+	
+	// Clears the carry flag
 	m_carry = 0;
-	m_irqen = 0;
-	m_timer_en = 0;
+
+	//STOP the interrupt
+	m_irqen = 0; 
+	
 	m_inhalt = 0;
+	// Resets the timer and timer flag
+	// TODO - O Que exatamente é esses dois timers?
+	m_timer_en = 0; 
 	m_timerover = 0;
+	// Stops the timer
 	m_timer = 0;
+
+	// Não faço ideia
+	// Sets port A high or floating
+		//TODO - Não sei o que é floating nesse caso
+	// Disables the interrupt mode 
+		//TODO - Saber o que é o interrupt mode
 }
 
 void ht1130_device::cycle()

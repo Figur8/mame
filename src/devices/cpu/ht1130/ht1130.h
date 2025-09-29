@@ -32,6 +32,7 @@ public:
 	auto pm_in_cb() { return m_port_in_pm.bind(); }
 	auto ps_in_cb() { return m_port_in_ps.bind(); }
 	auto pp_in_cb() { return m_port_in_pp.bind(); }
+	auto res_in_cb() { return m_port_in_res.bind(); }
 
 	auto pa_out_cb() { return m_port_out_pa.bind(); }
 
@@ -118,7 +119,7 @@ protected:
 	devcb_read8 m_port_in_pm;
 	devcb_read8 m_port_in_ps;
 	devcb_read8 m_port_in_pp;
-
+	devcb_read8 m_port_in_res;
 	devcb_write8 m_port_out_pa;
 
 	devcb_write64 m_segment_out;
