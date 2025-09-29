@@ -119,7 +119,7 @@ protected:
 	devcb_read8 m_port_in_pm;
 	devcb_read8 m_port_in_ps;
 	devcb_read8 m_port_in_pp;
-	devcb_read8 m_port_in_res;
+	devcb_read8 m_port_in_res; //TODO - Eu acho que não precisa de tanto espaço pro res
 	devcb_write8 m_port_out_pa;
 
 	devcb_write64 m_segment_out;

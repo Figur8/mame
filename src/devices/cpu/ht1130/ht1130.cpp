@@ -290,30 +290,43 @@ void ht1190_device::device_start()
 
 void ht1130_device::device_reset()
 {
+	// FIX - Por algum motivo esse print só rola uma vez
 	printf("resetou?");
+	
 	// Sets the program counter PC to 000H
 	m_pc = 0;
-	
 	
 	// Clears the carry flag
 	m_carry = 0;
 
 	//STOP the interrupt
-	m_irqen = 0; 
-	
-	m_inhalt = 0;
+	m_irqen = 0; //NOTE - O controlador do interrupt
+ 	
+	m_inhalt = 0; // TODO - Não tem menção disso na documentação
+		// Segundo a doc: The halt status can be terminated by an external interrupt or a hardware reset.
+
 	// Resets the timer and timer flag
 	// TODO - O Que exatamente é esses dois timers?
 	m_timer_en = 0; 
+		// Acho que esse en é de enabler...
+		// É relacionado ao timer off/time on
+		// Esse cara é o sinal?
+			// Sim esse cara é o sinal que define um estado no microcontrolador
+
 	m_timerover = 0;
+		// Acho que esse cara é o timer flag
+			// É exatamente isso
+	
 	// Stops the timer
 	m_timer = 0;
+		//Esse cara conta o tempo, o que torna estranho o _en e o over aqui.
+			// Na realidade o reset é feito a partir da definição desses outros estados
+			// e isso causa o reset do timer, talvez possa haver uma forma mais
+			// fidedigna de fazer isso aqui sem prejudicar o comportamento.
 
 	// Não faço ideia
 	// Sets port A high or floating
 		//TODO - Não sei o que é floating nesse caso
-	// Disables the interrupt mode 
-		//TODO - Saber o que é o interrupt mode
 }
 
 void ht1130_device::cycle()
@@ -944,7 +957,7 @@ void ht1130_device::do_op()
 	{
 		const u8 operand = fetch();
 		const u16 fulladdr = ((inst & 0x07) << 8) | operand | (m_pc & 0x800);
-
+		//TODO - Talvez entender esse ponto me faça entender o timerover
 		if (m_timerover)
 		{
 			m_pc = fulladdr;
