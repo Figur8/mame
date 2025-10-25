@@ -92,6 +92,7 @@ public:
 	void ht1130_common(machine_config &config);
 	void ga888(machine_config &config);
 	void piko55(machine_config &config);
+	void e88(machine_config &config);
 
 protected:
 	virtual void machine_start() override ATTR_COLD;
@@ -305,6 +306,51 @@ void hh_ht1130_state::piko55(machine_config &config)
 
 
 ROM_START( piko55 )
+	ROM_REGION( 0x1000, "maincpu", 0 )
+	ROM_LOAD( "keychain55in1.bin", 0x0000, 0x1000, CRC(c8623cf2) SHA1(27fe405a8a866bfc6a857af886ed00f64083c2cc) ) // visual decap
+
+	ROM_REGION( 0x280, "melody", 0 )
+	ROM_LOAD( "keychain55in1.srom", 0x000, 0x280, CRC(5667eb80) SHA1(4aee372f87a988ae46790538f4435c4a249e3686) )
+
+	ROM_REGION( 85508, "screen", 0)
+	ROM_LOAD( "keychain55in1.svg", 0, 85508, CRC(9ab6dd67) SHA1(a4365a00204bf4e376f28600c0b87289bda0cbb0) )
+ROM_END
+
+/*******************************************************************************
+
+  Brick game 8 in 1  E-88 - keychain game
+  * Holtek HT1130
+  * 8*12 LCD screen + 8 custom segments, 1-bit sound //TODO - Não sei nada sobre isso.
+
+*******************************************************************************/
+
+static INPUT_PORTS_START( e88 )
+	PORT_START("PS")
+	// TODO - Entender o PORT_CHANGED_MEMBER
+	//PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_VOLUME_DOWN ) PORT_NAME("On / Pause") PORT_CHANGED_MEMBER(DEVICE_SELF, FUNC(hh_ht11xx_state::input_wakeup), 0)
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_VOLUME_DOWN ) PORT_NAME("Start / Pause")
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_NAME("On / Off")
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_NAME("Sound")
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("PP")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_NAME("Left / Height")
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_NAME("Down / Mode")
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_NAME("Right / Level")
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_NAME("Rotate / Direction / Up")
+
+	PORT_START("PM")
+	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_UNUSED )
+INPUT_PORTS_END
+
+
+void hh_ht1130_state::e88(machine_config &config)
+{
+	ht1130_common(config);
+}
+
+
+ROM_START( e88 )
 	ROM_REGION( 0x1000, "maincpu", 0 )
 	ROM_LOAD( "keychain55in1.bin", 0x0000, 0x1000, CRC(c8623cf2) SHA1(27fe405a8a866bfc6a857af886ed00f64083c2cc) ) // visual decap
 
